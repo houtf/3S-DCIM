@@ -14,6 +14,7 @@ function showConfirm() {
   });
 }
 
+/*头部组件*/
 const Header = React.createClass({
 	handleClick(e) {
 	    console.log('click ', e);
@@ -38,7 +39,7 @@ const Header = React.createClass({
 	    		<p>3S <span className="l-name">DCIM</span> 数据中心基础设备可视化管理平台</p>
 	    		<Dropdown overlay={menu} trigger={['click']}>
 				    <a className="ant-dropdown-link" href="#">
-				      <Icon type="team" /> houtianfu <Icon type="down" />
+				      <Icon type="user" /> houtianfu <Icon type="down" />
 				    </a>
 				</Dropdown>
 	      	</div>
