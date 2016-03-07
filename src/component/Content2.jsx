@@ -7,38 +7,6 @@ const MenuItemGroup = Menu.ItemGroup;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-var columns = [{
-  title: '姓名',
-  dataIndex: 'name',
-  key: 'name',
-  render(text) {
-    return <a href="#">{text}</a>;
-  }
-}, {
-  title: '年龄',
-  dataIndex: 'age',
-  key: 'age',
-}, {
-  title: '住址',
-  dataIndex: 'address',
-  key: 'address',
-}, {
-  title: '操作',
-  key: 'operation',
-  render(text, record) {
-    return (
-      <span>
-        <a href="#">操作一{record.name}</a>
-        <span className="ant-divider"></span>
-        <a href="#">操作二</a>
-        <span className="ant-divider"></span>
-        <a href="#" className="ant-dropdown-link">
-          更多 <Icon type="down" />
-        </a>
-      </span>
-    );
-  }
-}];
 var solumn2 = [{
   title: 'id',
   dataIndex: 'id',
@@ -71,7 +39,7 @@ var solumn2 = [{
 }];
 var data = [{
   key: '1',
-  name: '胡彦斌',
+  name: '胡彦斌222',
   age: 32,
   address: '西湖区湖底公园1号'
 }, {
@@ -87,7 +55,7 @@ var data = [{
 }];
 
 /*右侧数据表格组件*/
-const Content = React.createClass({
+const Content2 = React.createClass({
   loadList: function(){
     var data = [
       {"level": 0, "room": "\u4fe1\u606f\u673a\u623f", "id": 100081, "name": "A\u4e92\u8054\u7f51\u8bbe\u5907\u533a"}, 
@@ -114,8 +82,8 @@ const Content = React.createClass({
             <Form inline onSubmit={this.handleSubmit}>
               <FormItem >
                 <Select style={{ width: 120 }} placeholder="字段类型" >
-                  <Option value="jack">Jack</Option>
-                  <Option value="lucy">Lucy</Option>
+                  <Option value="啊啊啊">Jack</Option>
+                  <Option value="l呀呀呀">Lucy</Option>
                   <Option value="disabled" disabled>Disabled</Option>
                   <Option value="yiminghe">yiminghe</Option>
                 </Select>
@@ -145,10 +113,10 @@ const Content = React.createClass({
             </Form>
           </Col>
         </Row>
-        <Table columns={solumn2} dataSource={this.state.data} />
+        <Table columns={solumn2} dataSource={data} />
       </div>
     );
   }
 });
 
-export default Content;
+export default Content2;

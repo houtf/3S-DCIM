@@ -10,7 +10,8 @@
     "babel-plugin-antd": "^0.2.0",
     "es3ify-loader": "^0.1.0",
     "react": "~0.14.6",
-    "react-dom": "~0.14.6"
+    "react-dom": "~0.14.6",
+    "react-router": "^2.0.0"
   },
   "devDependencies": {
     "dora": "0.2.x",
@@ -20,7 +21,8 @@
     "eslint": "1.10.x",
     "eslint-config-airbnb": "4.0.x",
     "eslint-plugin-react": "3.16.x",
-    "pre-commit": "1.x"
+    "pre-commit": "1.x",
+    "react-router": "^2.0.0"
   },
   "pre-commit": [
     "lint"
