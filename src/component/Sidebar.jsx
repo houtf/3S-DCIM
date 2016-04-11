@@ -1,41 +1,43 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { browserHistory, Router, Route, Link } from 'react-router';
+import { browserHistory, Router, Route, Link, IndexLink } from 'react-router';
 import { Menu, Icon} from 'antd';
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
+const ACTIVE = { color: 'red' }
 /*左侧导航菜单组件*/
 const Sidebar = React.createClass({
   getInitialState() {
     return {
-      current: '1',
+      current: '2',
       theme: 'dark'
     };
   },
   handleClick(e) {
-    console.log('click ', e);
+    console.log( e);
     this.setState({
       current: e.key
     });
   },
   render() {
     return (
+
       <Menu onClick={this.handleClick}
         theme={this.state.theme}
         style={{ width: '100%' }}
         defaultOpenKeys={['sub1']}
         selectedKeys={[this.state.current]}
         mode="inline">
-        <SubMenu key="sub1" title={<span><Icon type="inbox" /><span>资产管理</span></span>}>
-          <SubMenu title="机房列表">
-            <SubMenu title="信息机房">
-              <Menu.Item key="1"><Link to="/page1/tab1">选项1</Link></Menu.Item>
+        <SubMenu defaultOpenKeys={['sub11']} key="sub1" title={<span><Icon type="inbox" /><span>资产管理</span></span>}>
+          <SubMenu key="sub11" title="机房列表">
+            <SubMenu title="信息机房" key="sub111">
+              <Menu.Item key="1"><IndexLink to="/" activeStyle={ACTIVE}>Home</IndexLink></Menu.Item>
               <Menu.Item key="2">选项2</Menu.Item>
             </SubMenu>
             <SubMenu title="调度机房">
-              <Menu.Item key="3">选项3</Menu.Item>
-              <Menu.Item key="4">选项4</Menu.Item>
+              <Menu.Item key="3"><Link to="/a1">选项3</Link></Menu.Item>
+              <Menu.Item key="4"><Link to="/to_be_seen/a2">选项4</Link></Menu.Item>
             </SubMenu>
             <SubMenu title="通信机房">
               <Menu.Item key="5">选项3</Menu.Item>
@@ -44,7 +46,7 @@ const Sidebar = React.createClass({
           </SubMenu>
           <SubMenu title="未上架设备列表">
             <Menu.Item key="7">选项3</Menu.Item>
-            <Menu.Item key="8">选项4</Menu.Item>
+            <Menu.Item key="8"><Link to={{ pathname: '/demo', query: { room_serial: '\u7535\u529b\u5ba4' } }}>demo展示</Link></Menu.Item>
           </SubMenu>
           <Menu.Item key="25"><Link to="/to_be_seen">待确认设备列表</Link></Menu.Item>
           <Menu.Item key="38"><Link to="/zone_list">区域列表</Link></Menu.Item>

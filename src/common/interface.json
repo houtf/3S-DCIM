@@ -1,0 +1,38 @@
+{
+	"code" : 200,
+	"msg" : {
+		"machineRoomImgUrl" : "../img/bg.png",                              //机房图片url
+		"machineRoomImgWidth" : 2048,							   //机房图片宽度
+		"machineRoomImgHeight" : 780,							   //机房图片高度
+		"minScale" : 0.5,											   //最小缩放比例
+		"maxScale" : 2,												   //最大缩放比例
+		"initialScale": 0.75,										   //初始缩放比例
+		"districtA" : ["x1","y1","x2","y2","x3","y3","x4","y4"],   	   //A区域四个坐标点
+		"districtB" : ["x1","y1","x2","y2","x3","y3","x4","y4"],	   //B区域四个坐标点
+		"districtC" : ["x1","y1","x2","y2","x3","y3","x4","y4"],	   //C区域四个坐标点
+		"districtD" : ["x1","y1","x2","y2","x3","y3","x4","y4"],	   //D区域四个坐标点
+		"highLightDistrict" : "A",									   //高亮区域
+		"equipments" : {											   //机柜信息
+			"A3-1": {												   //机柜编号
+				"equipmentId" : 123456,									   //机柜ID
+				"points" : [0, 258, 138, 258, 123, 283, 123, 283, 138],//机柜坐标
+				"brand" : "brand",										   //品牌
+				"height" : "height",										   //高度
+				"count" :　"count",										   //承载设备数量
+				"spaceSize" : "spaceSize",									   //已用空间大小
+				"bearingSize" : "bearingSize",									   //承重大小
+				"elMsg" : "elMsg"										   //用电信息
+			},
+			"A3-2" :　{
+				"equipmentId" : 123456,									   //机柜ID
+				"points" : [0, 258, 152, 258, 138, 283, 138, 283, 152],//机柜坐标
+				"brand" : "brand",										   //品牌
+				"height" : "height",										   //高度
+				"count" :　"count",										   //承载设备数量
+				"spaceSize" : "spaceSize",									   //已用空间大小
+				"bearingSize" : "bearingSize",									   //承重大小
+				"elMsg" : "elMsg"										   //用电信息
+			}
+		}
+	}  
+}

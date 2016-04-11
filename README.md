@@ -3,12 +3,17 @@
 ## Environment
 
 ```
-node >= 4
+node >= 4 
 ```
 
 ## Code Style
 
 https://github.com/airbnb/javascript
+
+## install
+```html
+npm install
+```
 
 ## Develop
 

@@ -25,10 +25,11 @@ const Header = React.createClass({
 	},
   	render() {
   		const menu = (
-		  <Menu onClick={this.handleClick}>
+		  <Menu onClick={this.handleClick} mode="horizontal">
 		    <Menu.Item key="0">
 		      <a><Icon type="edit" /> 修改密码 </a>
 		    </Menu.Item>
+		    <Menu.Divider />
 		    <Menu.Item key="1">
 		      <a><Icon type="logout" /> 退出系统 </a>
 		    </Menu.Item>

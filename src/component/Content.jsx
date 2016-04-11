@@ -40,7 +40,7 @@ var columns = [{
   }
 }];
 var solumn2 = [{
-  title: 'id',
+  title: 'ifdsfd',
   dataIndex: 'id',
   key: 'id',  
 },{
@@ -90,7 +90,7 @@ var data = [{
 const Content = React.createClass({
   loadList: function(){
     var data = [
-      {"level": 0, "room": "\u4fe1\u606f\u673a\u623f", "id": 100081, "name": "A\u4e92\u8054\u7f51\u8bbe\u5907\u533a"}, 
+      {"level": 0, "name": "\u4fe1\u606f\u673a\u623f", "id": 100081, "room": "A\u4e92\u8054\u7f51\u8bbe\u5907\u533a"}, 
       {"level": 0, "room": "\u4fe1\u606f\u673a\u623f", "id": 100087, "name": "A\u7f51\u7edc\u5b58\u50a8\u533a"}, 
       {"level": 0, "room": "\u4fe1\u606f\u673a\u623f", "id": 100095, "name": "B\u6258\u7ba1\u8bbe\u5907\u533a"}, {"level": 0, "room": "\u4fe1\u606f\u673a\u623f", "id": 100108, "name": "C\u8bbe\u5907\u533a"}, 
       {"level": 0, "room": "\u4fe1\u606f\u673a\u623f", "id": 100121, "name": "D\u8bbe\u5907\u533a"}, 
@@ -145,7 +145,7 @@ const Content = React.createClass({
             </Form>
           </Col>
         </Row>
-        <Table columns={solumn2} dataSource={this.state.data} />
+        <Table bordered loading={false} columns={solumn2} dataSource={this.state.data} rowKey={record  => record.id}/>
       </div>
     );
   }
