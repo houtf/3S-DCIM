@@ -1,5 +1,7 @@
 import $ from "jquery";
 
+const K = 'REACT-DEMO-V1';
+
 function parseStr( str, substr, delim ){
     var start = str.indexOf( substr + '=' );
     if( start === -1 ) return '';
@@ -14,6 +16,12 @@ function parseStr( str, substr, delim ){
 }
 
 export default {
+	fetch () {
+        return JSON.parse(localStorage.getItem(K));
+    },
+    save (store) {
+        localStorage.setItem(K, JSON.stringify(store));
+    },
 	getTxtByNum (num){
 		switch (num) {
 			case 0 : return "机柜";break;

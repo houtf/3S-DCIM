@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import cx from 'classnames';
 import iScroll from 'iscroll/build/iscroll-zoom';
-import {Popover, Button, Icon, QueueAnim, Spin, Badge} from 'antd';
+import {Popover, Button, Icon, QueueAnim, Spin, Badge, Input, Form} from 'antd';
 import ReactIScroll from 'react-iscroll';
 import store from '../common/store';
 import $ from 'jquery';
+import '../styles/demo.less';
 import '../common/mock';
+const FormItem = Form.Item;
 
 let legendColors = ["#6495ED","#A52A2A","#000000","#00008B"];
+let choosedequIds = [];
+let groupObj = store.fetch() || {};
 class BG extends Component {
   render(){
     const style = {
@@ -52,8 +57,14 @@ class Block extends Component {
     this.setState({ visible : visible });
   }
 
-  handleClick(checkedValues) {
+  handleClick(choosedId) {
     this.setState({ badgeShow : !this.state.badgeShow });
+    /*choosedequIds = Array.from( new Set(choosedequIds.push(choosedId) ));*/
+    if($.inArray(choosedId,choosedequIds) === -1){
+      choosedequIds.push(choosedId);
+    }else{
+      choosedequIds.splice($.inArray(choosedId,choosedequIds),1);
+    }
   }
   render() {
     const content = (<div>
@@ -79,19 +90,15 @@ class Block extends Component {
       height:         eqd.height,
       top:            eqd.top,
       left:           eqd.left,
-      backgroundColor:renderColor,
-      position:       "absolute",
-      zIndex:         1,
-      fontSize:       "6px",
-      cursor:         "pointer",
-      borderLeftWidth:"2px",
-      borderLeftStyle:"solid",
-      borderLeftColor:"#bcbcbc"
+      backgroundColor:renderColor
     }
+    let classes = cx({
+      'singleEq' : true
+    });
     return (<div>
       <Popover visible={this.state.visible} overlay={content} placement="top"
           title={eq.eqName} trigger="hover" onVisibleChange={this.handleVisibleChange}>
-        <div style={style} onDoubleClick={this.handleDbClick} onClick={this.handleClick}>
+        <div id={eq.eqName} className={classes} style={style} onDoubleClick={this.handleDbClick} onClick={this.handleClick.bind(this,eq.eqName)}>
           <Badge dot={this.state.badgeShow} />
           <div style={{color:"#FFF",fontSize:"12px"}}>{eq.eqName}</div>
         </div>
@@ -105,21 +112,125 @@ class Legend extends Component{
   render(){
     const legendNodes = legendColors.map((color,idx)=>{
       return(
-        <div key={idx} style={{display:"inline-block",padding:"0 20px"}}>
-          <span style={{display:"inline-block",width:"20px",height:"20px",margin:"15px 5px 0 0",backgroundColor:color}}></span>
-          <span style={{color:"#FFF",fontSize:"18px",position:"relative",top:"-3px"}}>{store.getTxtByNum(idx)}</span>
+        <div key={idx} className="legend-container">
+          <span style={{backgroundColor:color}}></span>
+          <span>{store.getTxtByNum(idx)}</span>
         </div>
       )
     });
     return(
-      <div style={{position:"fixed",left:"100px",bottom:"50px",height:"50px",backgroundColor:"rgba(0,0,0,.4)"}}>{legendNodes}</div>
+      <div className="legends">{legendNodes}</div>
+    )
+  }
+}
+
+class OperatePanel extends Component{
+  constructor(){
+    super();
+    this.state = {
+      nodes : null,
+      show : false
+    };
+    this.groupHandler = this.groupHandler.bind(this);
+    this.submitHandler = this.submitHandler.bind(this);
+    this.chooseGroup = this.chooseGroup.bind(this);
+    this.exportMultiHandler = this.exportMultiHandler.bind(this);
+  }
+  /*输出当前选中的机柜ID*/
+  exportMultiHandler(){
+    console.log(choosedequIds);
+  }
+  /*切换分组框显隐*/
+  groupHandler(){
+    this.setState({
+      show : !this.state.show
+    });
+    this.refs.groupInput.value = "";
+  }
+  /*选中具体某一分组*/
+  chooseGroup(obj,event){
+    $(event.target).addClass('active').siblings().removeClass('active');
+    console.log(obj);
+    $('.singleEq').each(function(i,n){
+      $(n).removeClass('choosed');
+      let tmpId = this.id;
+      obj.v.forEach((v,k)=>{
+        if(v === tmpId){
+          $(n).addClass('choosed');
+        }
+      });
+    });
+  }
+  /*根据localStorage生成分组列表*/
+  setStateNodes(){
+    let tmpArr = [];
+    for(let i in groupObj){
+      tmpArr.push({
+        k : i,
+        v : groupObj[i]
+      })
+    }
+    const tmpNodes = tmpArr.map((obj,idx)=>{
+      return <div key={idx} className={`item`} onClick={this.chooseGroup.bind(this,obj)}>{obj.k}</div>
+    });
+    this.setState({
+      nodes : tmpNodes
+    })
+  }
+  /*分组确定按钮*/
+  submitHandler(){
+    let tmpKey = $.trim(this.refs.groupInput.value);
+    if(tmpKey == "" || choosedequIds.length == 0){
+      alert('分组名称为空或没有选中机柜');
+      return
+    }
+    groupObj["机柜组-"+tmpKey] = choosedequIds.concat();
+    this.setStateNodes();
+    store.save(groupObj); /*分组信息存储到localstorage*/
+  }
+  /*初始化渲染执行之前调用*/
+  componentWillMount (){
+    this.setStateNodes();
+  }
+  /*渲染*/
+  render(){
+    var showStatus = this.state.show ? "visible" : "hidden";
+    
+    return(
+      <div className={`op-panel`}>
+        <Button type="primary" shape="circle" size="large" onClick={this.exportMultiHandler}>
+          <Icon type="export" />
+        </Button><br />
+        <Form inline>
+          <FormItem prefixCls="lxy">
+            <Button type="primary" shape="circle" size="large" onClick={this.groupHandler}>
+              <Icon type="team" />
+            </Button>
+            <input type="text" ref="groupInput" placeholder="请输入新建分组名称" style={{visibility:showStatus}} />
+            <Button className="btn" onClick={this.submitHandler} style={{visibility:showStatus}}><Icon type="check" /></Button>
+          </FormItem>
+          <div className="item-container" style={{visibility:showStatus}}>{this.state.nodes}</div>
+        </Form>
+        <Button type="primary" shape="circle" size="large">
+          <Icon type="picture" />
+        </Button><br />
+        <Button type="primary" shape="circle" size="large">
+          <Icon type="environment" />
+        </Button><br />
+        <Button type="primary" shape="circle" size="large">
+          <Icon type="search" />
+        </Button><br />
+        <Button type="primary" shape="circle" size="large">
+          <Icon type="meh" />
+        </Button>
+      </div>
     )
   }
 }
 
 class BlockList extends Component {
 
-  render() {
+  render() { 
     const arr = [];
     for(const item in this.props.equipments){
       arr.push({
@@ -146,12 +257,14 @@ class BlockList extends Component {
       position :        "absolute",
       backgroundColor : "rgba(0,0,0,.5)"
     };
-    return (<div>
-      <QueueAnim interval={500} type={['left']} ease={['easeOutQuart', 'easeInOutQuart']} >
-      <div key="10">{blockNdoe}</div>
-      <div key="11" style={converStyle}></div>
-      </QueueAnim>
-    </div>);
+    return (
+      <div>
+        <QueueAnim interval={500} type={['left']} ease={['easeOutQuart', 'easeInOutQuart']} >
+        <div key="10">{blockNdoe}</div>
+        <div key="11" style={converStyle}></div>
+        </QueueAnim>
+      </div>
+    );
   }
 }
 const Demo = React.createClass({
@@ -187,7 +300,6 @@ const Demo = React.createClass({
       dataType : "json",
       async : false
     }).done((jsonData)=>{
-      console.log(jsonData)
       const D = jsonData[0];
       this.setState({
         rooms : D.rooms,
@@ -220,7 +332,8 @@ const Demo = React.createClass({
           <QueueAnim delay={500} interval={500} type={['scale']} ease={['easeOutQuart', 'easeInOutQuart']}>
             <BG key="0" width={this.state.bgWidth} height={this.state.bgHeight} url={this.state.bgUrl}/>
             <BlockList key="1" equipments={this.state.equipments} rooms={this.state.rooms} />
-            <Legend key="3"/>
+            <Legend key="3" />
+            <OperatePanel key="4" />
           </QueueAnim>
         </div>
 
